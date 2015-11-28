@@ -37,6 +37,7 @@ public class ChooseMsgActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mInflater = getLayoutInflater();
         mFestivalId = getIntent().getIntExtra(FestivalCategoryFragement.ID_FESTIVAL, -1);
+        setTitle(FestivalLab.getInstance().getFestivalByID(mFestivalId).getName());
         initView();
         initEvent();
     }
@@ -45,7 +46,7 @@ public class ChooseMsgActivity extends AppCompatActivity {
         mFabToSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                SendMsgActivity.toActivity(ChooseMsgActivity.this, mFestivalId, -1);
             }
         });
     }
@@ -56,18 +57,17 @@ public class ChooseMsgActivity extends AppCompatActivity {
 
         mLvMsgs.setAdapter(mAdapter = new ArrayAdapter<Msg>(this, -1, FestivalLab.getInstance().getMsgByFestivalId(mFestivalId)){
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(final int position, View convertView, ViewGroup parent) {
                 if(convertView == null){
                     convertView = mInflater.inflate(R.layout.item_msg, parent, false);
                 }
                 TextView content = (TextView)convertView.findViewById(R.id.id_tv_content);
                 Button toSend = (Button)convertView.findViewById(R.id.id_btn_toSend);
-                content.setText(getItem(position).getContent());
-
+                content.setText("  " + getItem(position).getContent());
                 toSend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        SendMsgActivity.toActivity(ChooseMsgActivity.this, mFestivalId, getItem(position).getId());
                     }
                 });
                 return convertView;
