@@ -31,6 +31,7 @@ import java.util.Set;
 import xiaofei.com.festival_sms.bean.Festival;
 import xiaofei.com.festival_sms.bean.FestivalLab;
 import xiaofei.com.festival_sms.bean.Msg;
+import xiaofei.com.festival_sms.bean.SendedMsg;
 import xiaofei.com.festival_sms.biz.SmsBiz;
 import xiaofei.com.festival_sms.view.FlowLayout;
 
@@ -67,7 +68,7 @@ public class SendMsgActivity extends AppCompatActivity {
     private BroadcastReceiver mSendBroadcastReceiver;
     private BroadcastReceiver mDeliverBroadcastReceiver;
 
-    private SmsBiz smsBiz = new SmsBiz();
+    private SmsBiz smsBiz ;
 
     private int mMsgSendCount;
     private int mTotalCount;
@@ -83,6 +84,7 @@ public class SendMsgActivity extends AppCompatActivity {
         setContentView(R.layout.activity_send_msg);
 
         mInflater = LayoutInflater.from(this);
+        smsBiz = new SmsBiz(this);
         initDatas();
         initView();
         initEvent();
@@ -172,10 +174,27 @@ public class SendMsgActivity extends AppCompatActivity {
                     return;
                 }
                 mLayoutLoading.setVisibility(View.VISIBLE);
-                mTotalCount = smsBiz.sendMsg(mContactNums, msgContent, mSendPi, mDeliverPi);
+                mTotalCount = smsBiz.sendMsg(mContactNums, buildSendMsg(mMsg), mSendPi, mDeliverPi);
                 mMsgSendCount = 0;
             }
         });
+    }
+
+    private SendedMsg buildSendMsg(Msg mMsg) {
+        SendedMsg sendedMsg = new SendedMsg();
+        sendedMsg.setFestivalName(mFestival.getName());
+        sendedMsg.setMsg(mMsg.getContent());
+        String names = "";
+        for(String name : mContactNames){
+            names += name + ":";
+        }
+        sendedMsg.setNames(names.substring(0, names.length() - 1));
+        String nums = "";
+        for(String num : mContactNums){
+            nums += num + ":";
+        }
+        sendedMsg.setNumbers(nums.substring(0, nums.length() - 1));
+        return sendedMsg;
     }
 
     @Override
