@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 
 import xiaofei.com.festival_sms.fragement.FestivalCategoryFragement;
+import xiaofei.com.festival_sms.fragement.SmsHistoryFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,7 +50,14 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return new FestivalCategoryFragement();
+                switch (position){
+                    case 0:
+                        return new FestivalCategoryFragement();
+                    case 1:
+                        return new SmsHistoryFragment();
+                    default:
+                        return null;
+                }
             }
 
             @Override
