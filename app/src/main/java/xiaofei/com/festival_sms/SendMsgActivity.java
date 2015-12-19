@@ -174,16 +174,16 @@ public class SendMsgActivity extends AppCompatActivity {
                     return;
                 }
                 mLayoutLoading.setVisibility(View.VISIBLE);
-                mTotalCount = smsBiz.sendMsg(mContactNums, buildSendMsg(mMsg), mSendPi, mDeliverPi);
+                mTotalCount = smsBiz.sendMsg(mContactNums, buildSendMsg(msgContent), mSendPi, mDeliverPi);
                 mMsgSendCount = 0;
             }
         });
     }
 
-    private SendedMsg buildSendMsg(Msg mMsg) {
+    private SendedMsg buildSendMsg(String msg) {
         SendedMsg sendedMsg = new SendedMsg();
         sendedMsg.setFestivalName(mFestival.getName());
-        sendedMsg.setMsg(mMsg.getContent());
+        sendedMsg.setMsg(msg);
         String names = "";
         for(String name : mContactNames){
             names += name + ":";
